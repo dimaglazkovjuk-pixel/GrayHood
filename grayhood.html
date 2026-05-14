@@ -1,0 +1,2484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>GRAYHOOD — THE UNDERGROUND HAS A UNIFORM</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/grayhood/logos/favicon-32.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/grayhood/logos/favicon-180.png">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta http-equiv="X-Frame-Options" content="DENY">
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; media-src 'self'; connect-src 'none'; frame-src 'none'; object-src 'none'; base-uri 'self';">
+  <script>history.scrollRestoration = 'manual'; window.scrollTo(0, 0);</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #000;
+      --white: #fff;
+      --gray: #999;
+      --dark: #0a0a0a;
+      --border: rgba(255,255,255,0.08);
+    }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      background: var(--black);
+      color: var(--white);
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    .cursor {
+      position: fixed;
+      width: 32px;
+      height: 32px;
+      background: url('assets/grayhood/logos/logo.png') center/70% no-repeat #fff;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.3s, height 0.3s, opacity 0.3s;
+    }
+    .cursor-ring {
+      position: fixed;
+      width: 44px;
+      height: 44px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.4s, height 0.4s, opacity 0.3s;
+    }
+
+    /* ENTER SCREEN */
+    #enter-screen {
+      position: fixed;
+      inset: 0;
+      background: var(--black);
+      z-index: 9000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      cursor: none;
+    }
+    #enter-logo {
+      width: 80px;
+      filter: invert(1);
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 0.3s;
+    }
+    #enter-btn {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 140px;
+      height: 140px;
+      cursor: none;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 0.8s;
+    }
+    #enter-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 20px;
+      letter-spacing: 6px;
+      color: var(--white);
+      position: relative;
+      z-index: 2;
+    }
+    #enter-ring {
+      position: absolute;
+      inset: 0;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 50%;
+      animation: ringPulse 2s ease-in-out infinite;
+    }
+    #enter-btn:hover #enter-ring {
+      border-color: rgba(255,255,255,0.8);
+      animation: none;
+      transform: scale(1.05);
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    #enter-tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 5px;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      position: absolute;
+      bottom: 40px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 1.2s;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
+    }
+    @keyframes ringPulse {
+      0%, 100% { transform: scale(1); opacity: 0.4; }
+      50% { transform: scale(1.08); opacity: 1; }
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 24px 48px;
+      mix-blend-mode: difference;
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 6px;
+      color: var(--white);
+      text-decoration: none;
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      list-style: none;
+    }
+    .nav-links li {
+      display: flex;
+      align-items: center;
+    }
+    .nav-links a {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--white);
+      text-decoration: none;
+      text-transform: uppercase;
+      opacity: 0.7;
+      transition: opacity 0.3s;
+    }
+    .nav-links a:hover { opacity: 1; }
+
+    /* HERO */
+    #hero {
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-start;
+    }
+    #hero-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.65;
+    }
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.1) 50%, rgba(0,0,0,0.4) 100%);
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 48px 64px;
+    }
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      opacity: 0;
+    }
+    .hero-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(72px, 12vw, 160px);
+      line-height: 0.9;
+      letter-spacing: -2px;
+      overflow: hidden;
+    }
+    .hero-title span {
+      display: block;
+      transform: translateY(100%);
+      opacity: 0;
+    }
+    .hero-sub {
+      margin-top: 32px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      color: var(--gray);
+      text-transform: uppercase;
+      opacity: 0;
+    }
+    .hero-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 40px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 16px 32px;
+      opacity: 0;
+      transition: background 0.3s, color 0.3s, border-color 0.3s;
+    }
+    .hero-cta:hover {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+    .hero-cta .arrow { transition: transform 0.3s; }
+    .hero-cta:hover .arrow { transform: translateX(6px); }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      right: 48px;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+    }
+    .scroll-indicator span {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 4px;
+      color: var(--gray);
+      text-transform: uppercase;
+      writing-mode: vertical-rl;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--gray));
+      animation: scrollPulse 2s infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(0.6); }
+    }
+
+    /* PARTICLES SECTION */
+    #particles-section {
+      height: 350vh;
+      position: relative;
+    }
+    .particles-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--black);
+    }
+    #pcanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .p-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards 2s;
+      z-index: 2;
+    }
+    .p-hint-line {
+      width: 1px;
+      height: 50px;
+      background: linear-gradient(transparent, rgba(255,255,255,0.35));
+      animation: scrollPulse 2s infinite;
+    }
+    .p-hint span {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+    .p-label {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 10vw, 120px);
+      letter-spacing: 8px;
+      color: rgba(255,255,255,0.04);
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 1;
+    }
+
+    /* MANIFESTO */
+    #manifesto {
+      padding: 160px 48px;
+      max-width: 900px;
+    }
+    .manifesto-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 5px;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 40px;
+    }
+    .manifesto-text {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(36px, 5vw, 72px);
+      line-height: 1.05;
+      letter-spacing: 1px;
+    }
+    .manifesto-text .dim { color: rgba(255,255,255,0.2); }
+
+    /* MARQUEE */
+    .marquee-section {
+      padding: 48px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-track span {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 18px;
+      letter-spacing: 8px;
+      color: rgba(255,255,255,0.15);
+      padding: 0 48px;
+      text-transform: uppercase;
+    }
+    .marquee-track span.accent {
+      color: rgba(255,255,255,0.6);
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* PRODUCTS */
+    #products {
+      padding: 120px 0;
+    }
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 0 48px;
+      margin-bottom: 80px;
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 6vw, 80px);
+      letter-spacing: 2px;
+    }
+    .section-count {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 3px;
+      color: var(--gray);
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2px;
+    }
+    .product-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: none;
+    }
+    .product-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      filter: grayscale(20%);
+    }
+    .product-card:hover img {
+      transform: scale(1.05);
+      filter: grayscale(0%);
+    }
+    .product-card-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .product-card:hover .product-card-overlay { opacity: 1; }
+    .product-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 32px;
+      transform: translateY(20px);
+      opacity: 0;
+      transition: transform 0.4s, opacity 0.4s;
+    }
+    .product-card:hover .product-info {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    .product-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 3px;
+    }
+    .product-type {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .product-price {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      letter-spacing: 2px;
+      margin-top: 8px;
+    }
+    .product-badge {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 3px;
+      background: var(--white);
+      color: var(--black);
+      padding: 6px 12px;
+      text-transform: uppercase;
+    }
+
+    /* DROP SECTION */
+    #drop {
+      padding: 160px 48px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .drop-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 6px;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 48px;
+    }
+    .drop-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(60px, 10vw, 140px);
+      line-height: 0.9;
+      letter-spacing: -1px;
+    }
+    .drop-sub {
+      margin-top: 32px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--gray);
+      letter-spacing: 1px;
+      max-width: 400px;
+    }
+    .notify-form {
+      display: flex;
+      margin-top: 48px;
+      border: 1px solid rgba(255,255,255,0.2);
+      overflow: hidden;
+    }
+    .notify-form input {
+      background: transparent;
+      border: none;
+      outline: none;
+      padding: 16px 24px;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      width: 280px;
+    }
+    .notify-form input::placeholder { color: rgba(255,255,255,0.3); }
+    .notify-form button {
+      background: var(--white);
+      border: none;
+      padding: 16px 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.3s, color 0.3s;
+    }
+    .notify-form button:hover { background: #ccc; }
+
+    /* LOOKBOOK — HORIZONTAL SCROLL */
+    /* LOOKBOOK */
+    #lookbook {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #000;
+      border-top: 1px solid var(--border);
+      overflow: hidden;
+    }
+    .lb-top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding: 28px 48px 22px;
+      flex-shrink: 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .lb-top-left {
+      display: flex;
+      align-items: flex-end;
+      gap: 24px;
+    }
+    .lb-big-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(40px, 5vw, 68px);
+      letter-spacing: 4px;
+      line-height: 1;
+    }
+    .lb-edition {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: var(--gray);
+      text-transform: uppercase;
+      padding-bottom: 4px;
+    }
+    .lb-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+      line-height: 2;
+      text-align: right;
+    }
+    .lb-progress-bar {
+      height: 1px;
+      background: rgba(255,255,255,0.06);
+      position: relative;
+      flex-shrink: 0;
+    }
+    .lb-progress-fill {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      background: rgba(255,255,255,0.4);
+      width: 0%;
+      transition: width 0.08s linear;
+    }
+    #lb-inner {
+      flex: 1;
+      overflow: hidden;
+      position: relative;
+    }
+    .lb-strip-h {
+      display: flex;
+      align-items: stretch;
+      height: 100%;
+      will-change: transform;
+    }
+
+    /* Individual frames */
+    .lb-frame {
+      position: relative;
+      height: 100%;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .lb-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94), filter 0.5s;
+      filter: grayscale(20%) brightness(0.88);
+    }
+    .lb-frame:hover img {
+      transform: scale(1.04);
+      filter: grayscale(0%) brightness(1);
+    }
+    /* Scanline hover effect */
+    .lb-frame::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0,0,0,0.08) 2px,
+        rgba(0,0,0,0.08) 4px
+      );
+      z-index: 2;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .lb-frame:hover::before { opacity: 1; }
+
+    /* Frame number — top left */
+    .lb-num {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 72px;
+      line-height: 1;
+      color: rgba(255,255,255,0.07);
+      z-index: 3;
+      pointer-events: none;
+      transition: color 0.4s;
+    }
+    .lb-frame:hover .lb-num { color: rgba(255,255,255,0.18); }
+
+    /* Coords — top right */
+    .lb-coords {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.3);
+      z-index: 3;
+      pointer-events: none;
+      text-align: right;
+      line-height: 1.8;
+    }
+
+    /* Bottom info bar */
+    .lb-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 24px 20px 20px;
+      background: linear-gradient(transparent, rgba(0,0,0,0.85));
+      z-index: 3;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.25,0.46,0.45,0.94);
+    }
+    .lb-frame:hover .lb-info { transform: translateY(0); }
+    .lb-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 4px;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .lb-caption {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 22px;
+      letter-spacing: 3px;
+    }
+
+    /* Text divider card */
+    .lb-divider {
+      flex-shrink: 0;
+      width: 320px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 40px;
+      border-left: 1px solid var(--border);
+      border-right: 1px solid var(--border);
+    }
+    .lb-div-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 5px;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .lb-div-quote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(32px, 3vw, 48px);
+      line-height: 1.05;
+      letter-spacing: 1px;
+      color: rgba(255,255,255,0.85);
+    }
+    .lb-div-sub {
+      margin-top: 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.2);
+      text-transform: uppercase;
+      line-height: 2;
+    }
+
+    /* VERTICAL PHOTO GALLERY */
+    #gallery-vertical {
+      background: #000;
+      padding: 120px 40px 160px;
+    }
+    .gv-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 80px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      padding-bottom: 32px;
+    }
+    .gv-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.25);
+      text-transform: uppercase;
+    }
+    .gv-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(64px, 10vw, 140px);
+      letter-spacing: 4px;
+      line-height: 0.88;
+      color: #fff;
+      text-align: right;
+    }
+    .gv-row {
+      display: grid;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .gv-row--2col      { grid-template-columns: 60fr 40fr; }
+    .gv-row--2col-r    { grid-template-columns: 40fr 60fr; }
+    .gv-row--1col      { grid-template-columns: 1fr; }
+    .gv-row--3col      { grid-template-columns: 1fr 1fr 1fr; }
+    .gv-row--wide-left { grid-template-columns: 70fr 30fr; }
+    .gv-photo {
+      overflow: hidden;
+      clip-path: inset(100% 0 0 0);
+      position: relative;
+    }
+    .gv-photo--tall  { aspect-ratio: 3/4; }
+    .gv-photo--wide  { aspect-ratio: 16/9; }
+    .gv-photo--sq    { aspect-ratio: 1/1; }
+    .gv-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.08);
+      transition: transform 0.6s ease;
+    }
+    .gv-photo:hover img { transform: scale(1.03); }
+    .gv-photo-label {
+      position: absolute;
+      bottom: 16px;
+      left: 20px;
+      font-family: 'Space Mono', monospace;
+      font-size: 8px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      pointer-events: none;
+    }
+
+    /* VIDEO SECTION */
+    #videos {
+      padding: 120px 0;
+      border-top: 1px solid var(--border);
+    }
+    .video-header {
+      padding: 0 48px;
+      margin-bottom: 80px;
+    }
+    .videos-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .video-block {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 9/16;
+      background: #111;
+    }
+    .video-block video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.85;
+    }
+    .video-block-wide {
+      grid-column: span 2;
+      aspect-ratio: 16/7;
+    }
+    .video-block-wide video {
+      object-position: center 30%;
+    }
+    .video-caption {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: rgba(255,255,255,0.5);
+      text-transform: uppercase;
+    }
+
+    /* FULL WIDTH VIDEO (F1) */
+    #hero-f1 {
+      position: relative;
+      height: 80vh;
+      overflow: hidden;
+      border-top: 1px solid var(--border);
+    }
+    #hero-f1 video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.7;
+    }
+    .f1-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.5), transparent, rgba(0,0,0,0.6));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+    .f1-quote {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(48px, 7vw, 100px);
+      letter-spacing: 4px;
+      line-height: 1;
+    }
+    .f1-quote-sub {
+      margin-top: 16px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 5px;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+
+    /* FOOTER */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 80px 48px 48px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 80px;
+    }
+    .footer-brand-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 48px;
+      letter-spacing: 4px;
+      margin-bottom: 16px;
+    }
+    .footer-tagline {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--gray);
+      text-transform: uppercase;
+    }
+    .footer-col-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 4px;
+      color: var(--gray);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-links a {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .social-links {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .social-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: color 0.3s;
+    }
+    .social-link:hover { color: var(--white); }
+    .social-icon {
+      width: 32px;
+      height: 32px;
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .social-link:hover .social-icon {
+      border-color: var(--white);
+      background: var(--white);
+      color: var(--black);
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .footer-copy {
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: rgba(255,255,255,0.3);
+      text-transform: uppercase;
+    }
+    .footer-logo-img {
+      width: 32px;
+      filter: invert(1);
+      opacity: 0.4;
+    }
+
+    /* CART ICON IN NAV */
+    .nav-cart {
+      position: relative;
+      cursor: none;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      line-height: 1;
+      color: var(--white);
+      opacity: 0.7;
+      transition: opacity 0.3s;
+      background: none;
+      border: none;
+      padding: 0;
+      vertical-align: middle;
+    }
+    .nav-cart:hover { opacity: 1; }
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -10px;
+      width: 16px;
+      height: 16px;
+      background: var(--white);
+      color: var(--black);
+      border-radius: 50%;
+      font-size: 9px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Mono', monospace;
+      opacity: 0;
+      transform: scale(0);
+      transition: transform 0.3s, opacity 0.3s;
+    }
+    .cart-badge.visible { opacity: 1; transform: scale(1); }
+
+    /* PRODUCT ADD BUTTON */
+    .product-add-btn {
+      margin-top: 12px;
+      width: 100%;
+      padding: 10px 0;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .product-add-btn:hover {
+      background: var(--white);
+      color: var(--black);
+      border-color: var(--white);
+    }
+
+    /* CART DRAWER */
+    #cart-drawer {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 420px;
+      height: 100vh;
+      background: #0d0d0d;
+      border-left: 1px solid var(--border);
+      z-index: 8000;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(100%);
+      transition: transform 0.5s cubic-bezier(0.77, 0, 0.175, 1);
+    }
+    #cart-drawer.open { transform: translateX(0); }
+    .cart-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      z-index: 7999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s;
+    }
+    .cart-backdrop.open { opacity: 1; pointer-events: all; }
+
+    .cart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 32px 32px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .cart-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 28px;
+      letter-spacing: 4px;
+    }
+    .cart-close {
+      background: none;
+      border: none;
+      color: var(--white);
+      font-size: 24px;
+      cursor: none;
+      opacity: 0.6;
+      transition: opacity 0.3s;
+      line-height: 1;
+    }
+    .cart-close:hover { opacity: 1; }
+
+    .cart-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 24px;
+    }
+    .cart-coming-logo {
+      width: 60px;
+      filter: invert(1);
+      opacity: 0.15;
+    }
+    .cart-coming-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 42px;
+      letter-spacing: 6px;
+      line-height: 1;
+    }
+    .cart-coming-sub {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: var(--gray);
+      line-height: 1.8;
+      max-width: 280px;
+    }
+    .cart-notify-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      width: 100%;
+      max-width: 300px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .cart-notify-form input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      outline: none;
+      padding: 14px 16px;
+      color: var(--white);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 2px;
+      width: 100%;
+    }
+    .cart-notify-form input::placeholder { color: rgba(255,255,255,0.25); }
+    .cart-notify-form button {
+      background: var(--white);
+      border: none;
+      padding: 14px;
+      font-family: 'Space Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      cursor: none;
+      transition: background 0.3s;
+    }
+    .cart-notify-form button:hover { background: #ccc; }
+
+    /* TOAST */
+    #cart-toast {
+      position: fixed;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--white);
+      color: var(--black);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      padding: 14px 28px;
+      z-index: 9500;
+      opacity: 0;
+      transition: opacity 0.3s, transform 0.3s;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    #cart-toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    /* UTILS */
+    .reveal-up {
+      opacity: 0;
+      transform: translateY(40px);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+    }
+    .split-line {
+      overflow: hidden;
+    }
+    .noise {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9001;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+    }
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--black); }
+    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+
+    /* ─── MOBILE ─────────────────────────────────────── */
+    @media (max-width: 768px) {
+
+      /* Cursor — ocultar en táctil */
+      body { cursor: auto; }
+      .cursor, .cursor-ring { display: none; }
+
+      /* Nav */
+      nav {
+        padding: 54px 24px 16px;
+        padding-top: max(env(safe-area-inset-top), 54px);
+        mix-blend-mode: normal;
+        background: rgba(0,0,0,0.95);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+      }
+      .nav-links {
+        position: fixed;
+        top: calc(max(env(safe-area-inset-top, 54px), 54px) + 38px); left: 0; right: 0;
+        background: #000;
+        border-bottom: 1px solid var(--border);
+        flex-direction: column;
+        gap: 0;
+        z-index: 99;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-12px);
+        transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+        display: flex !important;
+        padding-bottom: 8px;
+      }
+      .nav-links.mobile-open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+      .nav-links li {
+        border-bottom: 1px solid var(--border);
+        list-style: none;
+      }
+      .nav-links li:last-child { border-bottom: none; }
+      .nav-links a {
+        display: block;
+        padding: 18px 28px;
+        font-size: 11px;
+        letter-spacing: 4px;
+        opacity: 1;
+        width: 100%;
+      }
+      .nav-links .nav-cart {
+        display: flex;
+        padding: 18px 28px;
+        font-size: 11px;
+        letter-spacing: 3px;
+        opacity: 1;
+        cursor: pointer;
+        width: 100%;
+      }
+      .nav-hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        padding: 6px;
+        z-index: 101;
+        position: relative;
+      }
+      .nav-hamburger span {
+        display: block;
+        width: 22px;
+        height: 1px;
+        background: #fff;
+        transition: transform 0.3s, opacity 0.3s;
+      }
+      .nav-hamburger.active span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+      .nav-hamburger.active span:nth-child(2) { opacity: 0; }
+      .nav-hamburger.active span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+      /* Hero */
+      .hero-content { padding: 0 24px 48px; }
+      .hero-sub { display: none; }
+      .hero-cta { margin-top: 28px; padding: 14px 24px; }
+
+      /* Section headers */
+      .section-header { padding: 0 24px; margin-bottom: 40px; }
+
+      /* Products — siempre visibles en móvil */
+      .product-card-overlay { opacity: 1; }
+      .product-info { transform: translateY(0); opacity: 1; }
+      .product-info .product-add-btn { display: flex; width: 100%; justify-content: center; padding: 12px; font-size: 9px; }
+
+      /* Drop */
+      #drop { padding: 80px 24px; }
+
+      /* Lookbook — CSS snap scroll nativo */
+      #lookbook { height: auto; overflow: visible; }
+      .lb-top-bar { padding: 20px 24px 16px; }
+      .lb-big-title { font-size: 32px; }
+      .lb-meta { display: none; }
+      .lb-progress-bar { display: none; }
+      #lb-inner {
+        overflow-x: scroll;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        height: 62vh;
+        scrollbar-width: none;
+      }
+      #lb-inner::-webkit-scrollbar { display: none; }
+      .lb-strip-h {
+        width: max-content;
+        height: 100%;
+        gap: 3px;
+      }
+      .lb-frame {
+        width: 82vw !important;
+        scroll-snap-align: start;
+        height: 100%;
+        transform: none !important; /* desactiva ola */
+      }
+      .lb-frame .lb-info { transform: translateY(0); }
+      .lb-frame::before { opacity: 0; }
+      .lb-divider {
+        width: 72vw;
+        height: 100%;
+        scroll-snap-align: start;
+        flex-shrink: 0;
+      }
+
+      /* Gallery vertical */
+      #gallery-vertical { padding: 60px 16px 80px; }
+      .gv-header { margin-bottom: 40px; }
+      .gv-title { font-size: 56px; }
+      .gv-row--2col,
+      .gv-row--2col-r,
+      .gv-row--3col { grid-template-columns: 1fr; }
+      .gv-photo--tall { aspect-ratio: 4/5; }
+
+      /* Videos */
+      .video-header { padding: 0 24px; margin-bottom: 40px; }
+      .videos-layout { grid-template-columns: 1fr; }
+      .video-block-wide { grid-column: span 1; aspect-ratio: 9/16; }
+      .video-block-wide video { object-position: center center; }
+
+      /* F1 */
+      #hero-f1 { height: 55vh; }
+
+      /* Footer */
+      footer { padding: 60px 24px 40px; }
+      .footer-top { grid-template-columns: 1fr; gap: 40px; margin-bottom: 48px; }
+
+      /* Cart drawer */
+      #cart-drawer { width: 100%; }
+
+      /* Partículas */
+      #particles-section { height: 220vh; }
+      .particles-sticky {
+        height: 100svh;
+        height: 100vh; /* fallback */
+      }
+    }
+
+    /* Hamburger oculto en desktop */
+    @media (min-width: 769px) {
+      .nav-hamburger { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NOISE OVERLAY -->
+  <div class="noise"></div>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- ENTER SCREEN -->
+  <div id="enter-screen">
+    <img src="assets/grayhood/logos/logo.jpg" id="enter-logo" alt="GrayHood">
+    <div id="enter-btn">
+      <span id="enter-text">ENTRAR</span>
+      <div id="enter-ring"></div>
+    </div>
+    <div id="enter-tagline">THE UNDERGROUND HAS A UNIFORM</div>
+  </div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="#" class="nav-logo">GRAYHOOD</a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="#products">Collection</a></li>
+      <li><a href="#drop">Drop</a></li>
+      <li><a href="#lookbook">Lookbook</a></li>
+      <li><a href="https://www.instagram.com/_grayhood/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+      <li>
+        <button class="nav-cart" id="cart-btn" onclick="openCart()">
+          CARRITO
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-badge" id="cart-badge">0</span>
+        </button>
+      </li>
+    </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- CART BACKDROP -->
+  <div class="cart-backdrop" id="cart-backdrop" onclick="closeCart()"></div>
+
+  <!-- CART DRAWER -->
+  <div id="cart-drawer">
+    <div class="cart-header">
+      <div class="cart-title">CARRITO</div>
+      <button class="cart-close" onclick="closeCart()">✕</button>
+    </div>
+    <div class="cart-body">
+      <img src="assets/grayhood/logos/logo.jpg" class="cart-coming-logo" alt="">
+      <div class="cart-coming-title">COMING<br>SOON</div>
+      <div class="cart-coming-sub">
+        La tienda abre con el drop oficial.<br>
+        Apúntate para ser el primero.
+      </div>
+      <form class="cart-notify-form" name="cart-notify" netlify netlify-honeypot="bot-field" onsubmit="handleCartNotify(event)">
+        <input type="hidden" name="form-name" value="cart-notify">
+        <input type="hidden" name="bot-field" style="display:none">
+        <input type="email" name="email" placeholder="TU EMAIL" required>
+        <button type="submit">AVISARME</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div id="cart-toast">DISPONIBLE EN EL DROP — COMING SOON</div>
+
+  <!-- PARTICLES SECTION -->
+  <section id="particles-section">
+    <div class="particles-sticky">
+      <canvas id="pcanvas"></canvas>
+      <div class="p-hint">
+        <div class="p-hint-line"></div>
+        <span>SCROLL</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- HERO -->
+  <section id="hero">
+    <video id="hero-video" autoplay muted loop playsinline preload="auto">
+      <source src="assets/grayhood/videos/hero.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-tag">— SS 2025 / PRIMERA COLECCIÓN</div>
+      <h1 class="hero-title">
+        <span>GRAY</span>
+        <span>HOOD</span>
+      </h1>
+      <p class="hero-sub">The underground has a uniform</p>
+      <a href="#products" class="hero-cta">
+        Ver colección <span class="arrow">→</span>
+      </a>
+    </div>
+    <div class="scroll-indicator">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+  </section>
+
+  <!-- MANIFESTO -->
+  <section id="manifesto">
+    <div class="manifesto-label">// manifesto</div>
+    <p class="manifesto-text">
+      <span class="dim">No somos una marca.</span>
+      Somos lo que pasa cuando las calles
+      <span class="dim">dejan de pedir permiso.</span>
+      Ropa para los que nunca
+      encajaron — y nunca lo harán.
+    </p>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span>GRAYHOOD</span>
+      <span class="accent">✦</span>
+      <span>URBAN WEAR</span>
+      <span class="accent">✦</span>
+      <span>PRIMERA COLECCIÓN</span>
+      <span class="accent">✦</span>
+      <span>SS 2025</span>
+      <span class="accent">✦</span>
+      <span>UNDERGROUND</span>
+      <span class="accent">✦</span>
+      <span>GRAYHOOD</span>
+      <span class="accent">✦</span>
+      <span>URBAN WEAR</span>
+      <span class="accent">✦</span>
+      <span>PRIMERA COLECCIÓN</span>
+      <span class="accent">✦</span>
+      <span>SS 2025</span>
+      <span class="accent">✦</span>
+      <span>UNDERGROUND</span>
+      <span class="accent">✦</span>
+    </div>
+  </div>
+
+  <!-- PRODUCTS -->
+  <section id="products">
+    <div class="section-header">
+      <h2 class="section-title reveal-up">COLECCIÓN 01</h2>
+      <span class="section-count reveal-up">04 PIEZAS</span>
+    </div>
+    <div class="products-grid">
+
+      <!-- Hoodie 1: Lightning -->
+      <div class="product-card">
+        <img src="assets/grayhood/fotos/IMG_6189.jpg" alt="Storm Hoodie">
+        <div class="product-card-overlay"></div>
+        <div class="product-badge">NEW</div>
+        <div class="product-info">
+          <div class="product-type">Sudadera</div>
+          <div class="product-name">STORM HOODIE</div>
+          <div class="product-price">66 €</div>
+          <button class="product-add-btn" onclick="addToCart('Storm Hoodie', 66)">AÑADIR AL CARRITO</button>
+        </div>
+      </div>
+
+      <!-- Hoodie 2: Flames -->
+      <div class="product-card">
+        <img src="assets/grayhood/fotos/IMG_6370.jpg" alt="Blaze Hoodie">
+        <div class="product-card-overlay"></div>
+        <div class="product-badge">NEW</div>
+        <div class="product-info">
+          <div class="product-type">Sudadera</div>
+          <div class="product-name">BLAZE HOODIE</div>
+          <div class="product-price">66 €</div>
+          <button class="product-add-btn" onclick="addToCart('Blaze Hoodie', 66)">AÑADIR AL CARRITO</button>
+        </div>
+      </div>
+
+      <!-- Tee 1 -->
+      <div class="product-card">
+        <img src="assets/grayhood/fotos/IMG_6470.jpg" alt="Shadow Tee">
+        <div class="product-card-overlay"></div>
+        <div class="product-badge">NEW</div>
+        <div class="product-info">
+          <div class="product-type">Camiseta</div>
+          <div class="product-name">SHADOW TEE</div>
+          <div class="product-price">45 €</div>
+          <button class="product-add-btn" onclick="addToCart('Shadow Tee', 45)">AÑADIR AL CARRITO</button>
+        </div>
+      </div>
+
+      <!-- Tee 2 -->
+      <div class="product-card">
+        <img src="assets/grayhood/fotos/IMG_6587.jpg" alt="Grid Tee">
+        <div class="product-card-overlay"></div>
+        <div class="product-badge">NEW</div>
+        <div class="product-info">
+          <div class="product-type">Camiseta</div>
+          <div class="product-name">GRID TEE</div>
+          <div class="product-price">45 €</div>
+          <button class="product-add-btn" onclick="addToCart('Grid Tee', 45)">AÑADIR AL CARRITO</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DROP / COMING SOON -->
+  <section id="drop">
+    <div class="drop-label">// próximo drop</div>
+    <h2 class="drop-title reveal-up">
+      THE DROP<br>IS LOADING
+    </h2>
+    <p class="drop-sub">Sé el primero en saber cuándo caiga la próxima colección. Sin spam. Solo cuando importe.</p>
+    <form class="notify-form" name="drop-notify" netlify netlify-honeypot="bot-field" onsubmit="handleNotify(event)">
+      <input type="hidden" name="form-name" value="drop-notify">
+      <input type="hidden" name="bot-field" style="display:none">
+      <input type="email" name="email" placeholder="TU EMAIL" required>
+      <button type="submit">AVISAR</button>
+    </form>
+  </section>
+
+  <!-- LOOKBOOK -->
+  <section id="lookbook">
+    <div class="lb-top-bar">
+      <div class="lb-top-left">
+        <div class="lb-big-title">LOOKBOOK</div>
+        <div class="lb-edition">GH / SS25 / FIELD REPORT</div>
+      </div>
+      <div class="lb-meta">14 FRAMES<br>COLECCIÓN 01<br>2025</div>
+    </div>
+    <div class="lb-progress-bar">
+      <div class="lb-progress-fill" id="lb-progress"></div>
+    </div>
+
+    <div id="lb-inner">
+      <div class="lb-strip-h" id="lb-strip-1">
+
+        <div class="lb-frame" style="width:70vw;">
+          <img src="assets/grayhood/fotos/IMG_6190.jpg" alt="">
+          <div class="lb-num">01</div>
+          <div class="lb-coords">52°31'N 13°24'E<br>GH-SS25-001</div>
+          <div class="lb-info"><div class="lb-tag">// Storm Campaign</div><div class="lb-caption">INTO THE LIGHT</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:42vw;">
+          <img src="assets/grayhood/fotos/IMG_7892.jpg" alt="">
+          <div class="lb-num">02</div>
+          <div class="lb-coords">40°42'N 74°00'W<br>GH-SS25-002</div>
+          <div class="lb-info"><div class="lb-tag">// Urban Grid</div><div class="lb-caption">RAIN DAY</div></div>
+        </div>
+
+        <div class="lb-divider">
+          <div class="lb-div-label">// manifesto</div>
+          <div class="lb-div-quote">No pides<br>permiso.<br>Apareces.</div>
+          <div class="lb-div-sub">GrayHood<br>SS 2025<br>Field Report</div>
+        </div>
+
+        <div class="lb-frame" style="width:65vw;">
+          <img src="assets/grayhood/fotos/IMG_6371.jpg" alt="">
+          <div class="lb-num">03</div>
+          <div class="lb-coords">47°30'N 19°03'E<br>GH-SS25-003</div>
+          <div class="lb-info"><div class="lb-tag">// Architecture</div><div class="lb-caption">ABOVE THE CITY</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:40vw;">
+          <img src="assets/grayhood/fotos/IMG_7890.jpg" alt="">
+          <div class="lb-num">04</div>
+          <div class="lb-coords">51°33'N 00°06'W<br>GH-SS25-004</div>
+          <div class="lb-info"><div class="lb-tag">// Close Up</div><div class="lb-caption">STORM HOODIE</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:68vw;">
+          <img src="assets/grayhood/fotos/IMG_7886.jpg" alt="">
+          <div class="lb-num">05</div>
+          <div class="lb-coords">43°40'N 07°16'E<br>GH-SS25-005</div>
+          <div class="lb-info"><div class="lb-tag">// Paddock</div><div class="lb-caption">BEFORE THE RACE</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:38vw;">
+          <img src="assets/grayhood/fotos/IMG_7885.jpg" alt="">
+          <div class="lb-num">06</div>
+          <div class="lb-coords">51°30'N 00°07'W<br>GH-SS25-006</div>
+          <div class="lb-info"><div class="lb-tag">// Motorsport</div><div class="lb-caption">POLE POSITION</div></div>
+        </div>
+
+        <div class="lb-divider">
+          <div class="lb-div-label">// identidad</div>
+          <div class="lb-div-quote">Oscuro<br>por<br>naturaleza.</div>
+          <div class="lb-div-sub">No seguimos<br>tendencias.<br>Las ignoramos.</div>
+        </div>
+
+        <div class="lb-frame" style="width:40vw;">
+          <img src="assets/grayhood/fotos/IMG_7889.jpg" alt="">
+          <div class="lb-num">07</div>
+          <div class="lb-coords">43°46'N 11°15'E<br>GH-SS25-007</div>
+          <div class="lb-info"><div class="lb-tag">// Pit Lane</div><div class="lb-caption">PIRELLI NIGHTS</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:58vw;">
+          <img src="assets/grayhood/fotos/IMG_6472.jpg" alt="">
+          <div class="lb-num">08</div>
+          <div class="lb-coords">50°03'N 14°25'E<br>GH-SS25-008</div>
+          <div class="lb-info"><div class="lb-tag">// Abandoned</div><div class="lb-caption">SHADOW TEE</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:42vw;">
+          <img src="assets/grayhood/fotos/IMG_6589 2.jpg" alt="">
+          <div class="lb-num">09</div>
+          <div class="lb-coords">41°23'N 02°09'E<br>GH-SS25-009</div>
+          <div class="lb-info"><div class="lb-tag">// Night Drive</div><div class="lb-caption">GRID TEE</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:60vw;">
+          <img src="assets/grayhood/fotos/IMG_6188.jpg" alt="">
+          <div class="lb-num">10</div>
+          <div class="lb-coords">53°33'N 10°00'E<br>GH-SS25-010</div>
+          <div class="lb-info"><div class="lb-tag">// Underground</div><div class="lb-caption">FROM THE DARK</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:42vw;">
+          <img src="assets/grayhood/fotos/IMG_7893.jpg" alt="">
+          <div class="lb-num">11</div>
+          <div class="lb-coords">45°27'N 09°11'E<br>GH-SS25-011</div>
+          <div class="lb-info"><div class="lb-tag">// Pirelli</div><div class="lb-caption">STAND YOUR GROUND</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:66vw;">
+          <img src="assets/grayhood/fotos/IMG_6473.jpg" alt="">
+          <div class="lb-num">12</div>
+          <div class="lb-coords">50°03'N 14°25'E<br>GH-SS25-012</div>
+          <div class="lb-info"><div class="lb-tag">// Abandoned</div><div class="lb-caption">URBAN RUIN</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:40vw;">
+          <img src="assets/grayhood/fotos/IMG_7896.jpg" alt="">
+          <div class="lb-num">13</div>
+          <div class="lb-coords">43°40'N 07°16'E<br>GH-SS25-013</div>
+          <div class="lb-info"><div class="lb-tag">// Motorsport</div><div class="lb-caption">COLD GRID</div></div>
+        </div>
+
+        <div class="lb-frame" style="width:60vw;">
+          <img src="assets/grayhood/fotos/IMG_6372.jpg" alt="">
+          <div class="lb-num">14</div>
+          <div class="lb-coords">47°30'N 19°03'E<br>GH-SS25-014</div>
+          <div class="lb-info"><div class="lb-tag">// City</div><div class="lb-caption">ABOVE EVERYTHING</div></div>
+        </div>
+
+        <div style="flex-shrink:0;width:10vw;"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERTICAL PHOTO GALLERY -->
+  <section id="gallery-vertical">
+    <div class="gv-header">
+      <div class="gv-label">// Archivo SS25</div>
+      <div class="gv-title">FIELD<br>ARCHIVE</div>
+    </div>
+
+    <!-- Row 1: big left + portrait right -->
+    <div class="gv-row gv-row--2col">
+      <div class="gv-photo gv-photo--wide">
+        <img src="assets/grayhood/fotos/IMG_7884.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 001</div>
+      </div>
+      <div class="gv-photo gv-photo--tall">
+        <img src="assets/grayhood/fotos/IMG_7887.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 002</div>
+      </div>
+    </div>
+
+    <!-- Row 2: portrait left + wide right -->
+    <div class="gv-row gv-row--2col-r">
+      <div class="gv-photo gv-photo--tall">
+        <img src="assets/grayhood/fotos/IMG_6471.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 003</div>
+      </div>
+      <div class="gv-photo gv-photo--wide">
+        <img src="assets/grayhood/fotos/IMG_7888.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 004</div>
+      </div>
+    </div>
+
+    <!-- Row 3: full width -->
+    <div class="gv-row gv-row--1col">
+      <div class="gv-photo gv-photo--wide">
+        <img src="assets/grayhood/fotos/IMG_7891.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 005</div>
+      </div>
+    </div>
+
+    <!-- Row 4: triple -->
+    <div class="gv-row gv-row--3col">
+      <div class="gv-photo gv-photo--tall">
+        <img src="assets/grayhood/fotos/IMG_6586.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 006</div>
+      </div>
+      <div class="gv-photo gv-photo--tall">
+        <img src="assets/grayhood/fotos/IMG_6588 2.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 007</div>
+      </div>
+      <div class="gv-photo gv-photo--tall">
+        <img src="assets/grayhood/fotos/IMG_7894.jpg" alt="">
+        <div class="gv-photo-label">GH-SS25 / 008</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- F1 FULLSCREEN VIDEO -->
+  <section id="hero-f1">
+    <video autoplay muted loop playsinline preload="auto">
+      <source src="assets/grayhood/videos/f1.mp4" type="video/mp4">
+    </video>
+    <div class="f1-overlay">
+      <div class="f1-quote reveal-up">BUILT FOR<br>THE EXTREME</div>
+      <div class="f1-quote-sub">— GrayHood / SS25</div>
+    </div>
+  </section>
+
+  <!-- VIDEOS -->
+  <section id="videos">
+    <div class="video-header">
+      <h2 class="section-title reveal-up">BEHIND THE LENS</h2>
+    </div>
+    <div class="videos-layout">
+
+      <div class="video-block">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="assets/grayhood/videos/campaign1.mp4" type="video/mp4">
+        </video>
+        <div class="video-caption">GH / Campaign I</div>
+      </div>
+
+      <div class="video-block">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="assets/grayhood/videos/IMG_6791.mp4" type="video/mp4">
+        </video>
+        <div class="video-caption">GH / Behind the scenes</div>
+      </div>
+
+      <div class="video-block video-block-wide">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="assets/grayhood/videos/finallab.mp4" type="video/mp4">
+        </video>
+        <div class="video-caption">GH / Lab Session</div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-top">
+      <div>
+        <div class="footer-brand-name">GRAY<br>HOOD</div>
+        <div class="footer-tagline">The underground has a uniform</div>
+      </div>
+      <div>
+        <div class="footer-col-title">// Colección</div>
+        <ul class="footer-links">
+          <li><a href="#products">Storm Hoodie — 66€</a></li>
+          <li><a href="#products">Blaze Hoodie — 66€</a></li>
+          <li><a href="#products">Shadow Tee — 45€</a></li>
+          <li><a href="#products">Grid Tee — 45€</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">// Síguenos</div>
+        <div class="social-links">
+          <a href="https://www.instagram.com/_grayhood/" target="_blank" rel="noopener noreferrer" class="social-link">
+            <div class="social-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+              </svg>
+            </div>
+            @_grayhood
+          </a>
+          <a href="https://www.tiktok.com/@_grayhood_" target="_blank" rel="noopener noreferrer" class="social-link">
+            <div class="social-icon">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.83a8.27 8.27 0 004.84 1.56V6.94a4.85 4.85 0 01-1.07-.25z"/>
+              </svg>
+            </div>
+            @_grayhood_
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 GrayHood — All rights reserved</div>
+      <img src="assets/grayhood/logos/logo.jpg" alt="GrayHood" class="footer-logo-img">
+      <div class="footer-copy">Contacto: @_grayhood</div>
+    </div>
+  </footer>
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha384-g4NTh/Iv5PPU4xPyhEWqPcwtNXOvdaDI8LLnyYfyNZOjKJeYQyjzQ9X5275eBjpt" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" integrity="sha384-Z3REaz79l2IaAZqJsSABtTbhjgOUYyV3p90XNnAPCSHg3EMTz1fouunq9WZRtj3d" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js" integrity="sha384-RVPQwTb0fPz9kI8s5GwAq1Qioto9fnEQt1aKGSQSm8xV6+DIdBSgcCShoHqfKnhv" crossorigin="anonymous"></script>
+
+  <script>
+    history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+    window.addEventListener('load', () => window.scrollTo(0, 0));
+
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+
+    // === CURSOR ===
+    const cursor = document.getElementById('cursor');
+    const cursorRing = document.getElementById('cursorRing');
+    let mouseX = 0, mouseY = 0;
+    let ringX = 0, ringY = 0;
+
+    document.addEventListener('mousemove', e => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
+    });
+
+    function animateRing() {
+      ringX += (mouseX - ringX) * 0.12;
+      ringY += (mouseY - ringY) * 0.12;
+      gsap.set(cursorRing, { x: ringX, y: ringY });
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .product-card, .video-block, .lookbook-item').forEach(el => {
+      el.addEventListener('mouseenter', () => {
+        gsap.to(cursorRing, { width: 72, height: 72, duration: 0.3 });
+        gsap.to(cursor, { width: 36, height: 36, duration: 0.3 });
+      });
+      el.addEventListener('mouseleave', () => {
+        gsap.to(cursorRing, { width: 44, height: 44, duration: 0.3 });
+        gsap.to(cursor, { width: 28, height: 28, duration: 0.3 });
+      });
+    });
+
+    // === ENTER SCREEN ===
+    const enterScreen = document.getElementById('enter-screen');
+    const enterBtn = document.getElementById('enter-btn');
+
+    function playAllVideos() {
+      document.querySelectorAll('video').forEach(v => {
+        v.muted = true;
+        v.play().catch(() => {});
+      });
+    }
+
+    function enterSite() {
+      // Play every video immediately on user interaction
+      playAllVideos();
+
+      gsap.to(enterScreen, {
+        opacity: 0,
+        duration: 0.8,
+        ease: 'power2.inOut',
+        onComplete: () => {
+          enterScreen.style.display = 'none';
+          initHeroAnimations();
+        }
+      });
+    }
+
+    enterBtn.addEventListener('click', enterSite);
+    enterScreen.addEventListener('click', enterSite);
+
+    // === HERO ANIMATIONS ===
+    function initHeroAnimations() {
+      const heroTl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      heroTl
+        .to('.hero-tag', { opacity: 1, y: 0, duration: 0.8 })
+        .to('.hero-title span', { y: 0, opacity: 1, duration: 1, stagger: 0.1 }, '-=0.4')
+        .to('.hero-sub', { opacity: 1, duration: 0.8 }, '-=0.4')
+        .to('.hero-cta', { opacity: 1, duration: 0.8 }, '-=0.4')
+        .to('.scroll-indicator', { opacity: 1, duration: 0.8 }, '-=0.4');
+    }
+
+    // Re-play on tab return
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) playAllVideos();
+    });
+
+    // === PARTICLE LOGO SYSTEM ===
+    (function() {
+      const canvas = document.getElementById('pcanvas');
+      const ctx = canvas.getContext('2d');
+      const hint = document.querySelector('.p-hint');
+
+      let W, H, cx, cy;
+      let particles = [];
+      let logoPixels = [];
+      let progress = 0;
+      let rotY = 0;
+      let time = 0;
+      let running = false;
+
+      function resize() {
+        const vw = window.visualViewport ? window.visualViewport.width  : window.innerWidth;
+        const vh = window.visualViewport ? window.visualViewport.height : window.innerHeight;
+        W = canvas.width  = vw;
+        H = canvas.height = vh;
+        cx = W / 2; cy = H / 2;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', resize);
+      }
+
+      // Sample logo pixels — muestreo cada 2px para reducir a 25k iteraciones
+      function sampleLogo(callback) {
+        const img = new Image();
+        img.onload = () => {
+          setTimeout(() => {  // defer — no bloquea el hilo principal
+            const px = [];
+            const SIZE = 320;
+            const STEP = 2; // muestrear cada 2 píxeles = 4x menos trabajo
+            const logoOff = document.createElement('canvas');
+            logoOff.width = logoOff.height = SIZE;
+            const lctx = logoOff.getContext('2d');
+            const sc = Math.min(SIZE / img.width, SIZE / img.height) * 0.82;
+            lctx.drawImage(img, (SIZE - img.width*sc)/2, (SIZE - img.height*sc)/2, img.width*sc, img.height*sc);
+            const ldata = lctx.getImageData(0, 0, SIZE, SIZE).data;
+            const LOGO_SCALE = window.innerWidth <= 768
+              ? (window.innerWidth / 320) * 0.75
+              : 2.2;
+
+            for (let y = 0; y < SIZE; y += STEP) {
+              for (let x = 0; x < SIZE; x += STEP) {
+                const i = (y * SIZE + x) * 4;
+                const r = ldata[i], g = ldata[i+1], b = ldata[i+2], a = ldata[i+3];
+                const isGreen = g > r + 35 && g > b + 35 && g > 60;
+                const isDark  = (r + g + b) / 3 < 170;
+                if (!isGreen && isDark && a > 60) {
+                  px.push({
+                    x: (x - SIZE/2) * LOGO_SCALE + (Math.random()-0.5)*7,
+                    y: (y - SIZE/2) * LOGO_SCALE + (Math.random()-0.5)*7,
+                  });
+                }
+              }
+            }
+
+            for (let i = px.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [px[i], px[j]] = [px[j], px[i]];
+            }
+            callback(px);
+          }, 0);
+        };
+        img.src = 'assets/grayhood/logos/logo.png';
+      }
+
+      function initParticles(logo) {
+        logoPixels = logo;
+        const isMob = window.innerWidth <= 768;
+        const N = isMob ? Math.min(1800, logo.length) : Math.min(3500, logo.length);
+        particles = [];
+        for (let i = 0; i < N; i++) {
+          const target = logo[i % logo.length];
+
+          // Pure random spawn across entire viewport — no circles, no spirals
+          const sx = (Math.random() - 0.5) * W * 1.8;
+          const sy = (Math.random() - 0.5) * H * 1.8;
+          const sz = (Math.random() - 0.5) * 600;
+
+          // 3D depth for target: wavy Z surface so rotation shows real depth
+          const tz = Math.sin(target.x * 0.07) * 32
+                   + Math.cos(target.y * 0.05) * 22
+                   + (Math.random() - 0.5) * 10;
+
+          particles.push({
+            sx, sy, sz,
+            tx: target.x, ty: target.y, tz,
+            size: Math.random() * 1.5 + 0.4,
+            alpha: Math.random() * 0.5 + 0.5,
+            fx: Math.random() * 0.018 + 0.004,
+            fy: Math.random() * 0.012 + 0.003,
+            px: Math.random() * Math.PI * 2,
+            py: Math.random() * Math.PI * 2,
+            amp: Math.random() * 14 + 5,
+          });
+        }
+      }
+
+      function easeInOutCubic(t) {
+        return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2;
+      }
+
+      function rotY3D(x, y, z, a) {
+        const c = Math.cos(a), s = Math.sin(a);
+        return { x: x*c - z*s, y, z: x*s + z*c };
+      }
+      function rotX3D(x, y, z, a) {
+        const c = Math.cos(a), s = Math.sin(a);
+        return { x, y: y*c - z*s, z: y*s + z*c };
+      }
+      function project(x, y, z) {
+        const P = 900;
+        const sc = P / (P + z + 450);
+        return { px: x * sc + cx, py: y * sc + cy, sc };
+      }
+
+      function tick(now) {
+        if (!running) return;
+        requestAnimationFrame(tick);
+
+        const dt = Math.min(now - (tick._last || now), 50);
+        tick._last = now;
+        time += dt;
+
+        // Convergence completes exactly when scroll ends
+        const conv = easeInOutCubic(Math.min(progress, 1));
+        const isFormed = conv >= 0.999;
+
+        // Deterministic rotation: always starts at 4π (2 full turns) → ends at 0 (front)
+        // This guarantees the logo is always centered and face-forward when formed
+        const spinEase = 1 - Math.pow(1 - Math.min(conv, 1), 2); // ease-out
+        rotY = isFormed ? 0 : Math.PI * 4 * (1 - spinEase);
+
+        // X tilt: starts at 28°, goes to 0 as logo forms
+        const tiltX = isFormed ? 0 : Math.PI * 0.28 * (1 - conv);
+
+        if (hint) hint.style.opacity = Math.max(0, 1 - progress * 10);
+
+        ctx.clearRect(0, 0, W, H);
+
+        // Radial glow that grows stronger as logo forms, stays when formed
+        if (conv > 0.2) {
+          const glowR = isFormed ? 220 : 160;
+          const glowI = isFormed
+            ? 0.06 + Math.sin(time * 0.0008) * 0.02   // breathing glow when formed
+            : Math.sin(conv * Math.PI) * 0.08;
+          const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowR);
+          g.addColorStop(0, `rgba(255,255,255,${glowI})`);
+          g.addColorStop(1, 'rgba(0,0,0,0)');
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, W, H);
+        }
+
+        // Calcular posiciones y agrupar por color para reducir cambios de fillStyle
+        const fadeIn = Math.min(progress * 5, 1);
+        const buckets = {};
+        particles.forEach(p => {
+          const ix = p.sx + (p.tx - p.sx) * conv;
+          const iy = p.sy + (p.ty - p.sy) * conv;
+          const iz = p.sz + (p.tz - p.sz) * conv;
+
+          const r = Math.sqrt(ix * ix + iy * iy) || 1;
+          const vortexRange = Math.min(W, H) * 0.55;
+          const proximity = Math.max(0, 1 - r / vortexRange);
+          const swirlAmp = proximity * proximity * 160 * (1 - conv);
+          const tanX = (-iy / r) * swirlAmp;
+          const tanY = ( ix / r) * swirlAmp;
+
+          const idleStr = isFormed ? 0.04 : 0;
+          const ox = Math.sin(time * p.fx + p.px) * p.amp * idleStr + tanX;
+          const oy = Math.cos(time * p.fy + p.py) * p.amp * 0.55 * idleStr + tanY;
+
+          let pos = rotY3D(ix + ox, iy + oy, iz, rotY);
+          pos = rotX3D(pos.x, pos.y, pos.z, tiltX);
+          const pr = project(pos.x, pos.y, pos.z);
+
+          const size = Math.max(p.size * pr.sc * (1 + conv * 0.5), 0.3);
+          const a = p.alpha * fadeIn;
+          if (a <= 0.01 || pr.px < -50 || pr.px > W + 50) return;
+
+          const bright = Math.floor(170 + pr.sc * 85);
+          const key = `${bright},${Math.round(a * 20) / 20}`;
+          if (!buckets[key]) buckets[key] = { bright, a, pts: [] };
+          buckets[key].pts.push({ px: pr.px, py: pr.py, size });
+        });
+
+        // Pintar por lotes — un fillStyle por grupo
+        Object.values(buckets).forEach(({ bright, a, pts }) => {
+          ctx.fillStyle = `rgba(${bright},${bright},${bright},${a})`;
+          ctx.beginPath();
+          pts.forEach(({ px, py, size }) => {
+            ctx.moveTo(px + size, py);
+            ctx.arc(px, py, size, 0, Math.PI * 2);
+          });
+          ctx.fill();
+        });
+      }
+
+      function startLoop() {
+        if (running) return;
+        running = true;
+        requestAnimationFrame(tick);
+      }
+      function stopLoop() {
+        running = false;
+      }
+
+      // Load logo then wire up ScrollTrigger
+      sampleLogo(logo => {
+        initParticles(logo);
+
+        // Solo animar cuando la sección está visible
+        const pSection = document.getElementById('particles-section');
+        const visObs = new IntersectionObserver(([entry]) => {
+          if (entry.isIntersecting) startLoop();
+          else stopLoop();
+        }, { threshold: 0 });
+        visObs.observe(pSection);
+
+        ScrollTrigger.create({
+          trigger: '#particles-section',
+          start: 'top top',
+          end: 'bottom bottom',
+          onUpdate: self => { progress = self.progress; }
+        });
+      });
+    })();
+
+    // === SCROLL ANIMATIONS ===
+    // Parallax hero video
+    gsap.to('#hero-video', {
+      yPercent: 30,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true,
+      }
+    });
+
+    // Reveal up elements
+    document.querySelectorAll('.reveal-up').forEach(el => {
+      gsap.fromTo(el,
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        }
+      );
+    });
+
+    // Manifesto text reveal
+    gsap.fromTo('#manifesto .manifesto-text',
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#manifesto',
+          start: 'top 75%',
+        }
+      }
+    );
+
+    // Products stagger
+    gsap.fromTo('.product-card',
+      { opacity: 0, y: 80 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.15,
+        scrollTrigger: {
+          trigger: '.products-grid',
+          start: 'top 80%',
+        }
+      }
+    );
+
+    // Hamburger
+    const hamburger = document.getElementById('nav-hamburger');
+    const navLinks  = document.getElementById('nav-links');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('mobile-open');
+      });
+      navLinks.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('click', () => {
+          hamburger.classList.remove('active');
+          navLinks.classList.remove('mobile-open');
+        });
+      });
+    }
+
+    // Lookbook — horizontal scroll (solo desktop)
+    const lbEl    = document.getElementById('lookbook');
+    const lbStrip = document.getElementById('lb-strip-1');
+    const lbProg  = document.getElementById('lb-progress');
+    const isMobile = window.innerWidth <= 768;
+
+    if (!isMobile && lbEl && lbStrip) {
+      const lbFrames = lbStrip.querySelectorAll('.lb-frame');
+      gsap.to(lbStrip, {
+        x: () => -(lbStrip.scrollWidth - lbStrip.parentElement.clientWidth),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: lbEl,
+          pin: true,
+          anticipatePin: 1,
+          start: 'top top',
+          end: () => '+=' + Math.max(lbStrip.scrollWidth - lbStrip.parentElement.clientWidth, 1),
+          scrub: 1,
+          invalidateOnRefresh: true,
+          onUpdate: self => {
+            if (lbProg) lbProg.style.width = (self.progress * 100) + '%';
+            lbFrames.forEach((f, i) => {
+              f.style.transform = `translateY(${Math.sin(self.progress * Math.PI * 4 + i * 1.1) * 36}px)`;
+            });
+          }
+        }
+      });
+    }
+
+    // Vertical photo gallery — clip-path reveal
+    gsap.utils.toArray('.gv-photo').forEach((photo, i) => {
+      const img = photo.querySelector('img');
+      const delay = (i % 3) * 0.1;
+      gsap.to(photo, {
+        clipPath: 'inset(0% 0 0 0)',
+        duration: 1.1,
+        ease: 'power3.out',
+        delay,
+        scrollTrigger: {
+          trigger: photo,
+          start: 'top 88%',
+          toggleActions: 'play none none none'
+        }
+      });
+      gsap.to(img, {
+        scale: 1,
+        duration: 1.4,
+        ease: 'power3.out',
+        delay,
+        scrollTrigger: {
+          trigger: photo,
+          start: 'top 88%',
+          toggleActions: 'play none none none'
+        }
+      });
+    });
+
+    // Video blocks reveal
+    gsap.fromTo('.video-block',
+      { opacity: 0, y: 60 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        stagger: 0.12,
+        scrollTrigger: {
+          trigger: '.videos-layout',
+          start: 'top 80%',
+        }
+      }
+    );
+
+    // F1 section parallax text
+    gsap.fromTo('.f1-quote',
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: '#hero-f1',
+          start: 'top 60%',
+        }
+      }
+    );
+
+    // Footer reveal
+    gsap.fromTo('.footer-brand-name',
+      { opacity: 0, x: -40 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 1,
+        ease: 'power3.out',
+        scrollTrigger: {
+          trigger: 'footer',
+          start: 'top 80%',
+        }
+      }
+    );
+
+    // === CART ===
+    // Cambia a true cuando la tienda esté lista para vender
+    const STORE_LIVE = false;
+
+    function openCart() {
+      document.getElementById('cart-drawer').classList.add('open');
+      document.getElementById('cart-backdrop').classList.add('open');
+    }
+    function closeCart() {
+      document.getElementById('cart-drawer').classList.remove('open');
+      document.getElementById('cart-backdrop').classList.remove('open');
+    }
+
+    function addToCart(name, price) {
+      if (!STORE_LIVE) {
+        showToast();
+        openCart();
+        return;
+      }
+      // Aquí iría la lógica real de carrito cuando STORE_LIVE = true
+    }
+
+    let toastTimer;
+    function showToast() {
+      const toast = document.getElementById('cart-toast');
+      toast.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
+    }
+
+    function handleCartNotify(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'APUNTADO ✓';
+      setTimeout(() => { btn.textContent = 'AVISARME'; e.target.reset(); }, 3000);
+    }
+
+    // Close drawer with ESC
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeCart(); });
+
+    // === NOTIFY FORM ===
+    function handleNotify(e) {
+      e.preventDefault();
+      const btn = e.target.querySelector('button');
+      btn.textContent = 'APUNTADO ✓';
+      btn.style.background = '#333';
+      btn.style.color = '#fff';
+      setTimeout(() => {
+        btn.textContent = 'AVISAR';
+        btn.style.background = '';
+        btn.style.color = '';
+        e.target.reset();
+      }, 3000);
+    }
+
+    // Re-play videos when they scroll into view (keeps them running)
+    const videoObserver = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.muted = true;
+          entry.target.play().catch(() => {});
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('video').forEach(v => videoObserver.observe(v));
+
+    // === SMOOTH NAV LINKS ===
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const hash = link.getAttribute('href');
+        if (!hash || hash === '#') {
+          gsap.to(window, { scrollTo: 0, duration: 1.2, ease: 'power3.inOut' });
+          return;
+        }
+        const target = document.querySelector(hash);
+        if (target) {
+          gsap.to(window, {
+            scrollTo: { y: target, offsetY: 0 },
+            duration: 1.2,
+            ease: 'power3.inOut'
+          });
+        }
+      });
+    });
+
+  </script>
+</body>
+</html>
