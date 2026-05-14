@@ -39,25 +39,14 @@
     /* CURSOR */
     .cursor {
       position: fixed;
-      width: 32px;
-      height: 32px;
-      background: url('assets/grayhood/logos/logo.png') center/70% no-repeat #fff;
-      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      background: url('assets/grayhood/logos/logo.png') center/contain no-repeat transparent;
+      filter: invert(1);
       pointer-events: none;
       z-index: 9999;
       transform: translate(-50%, -50%);
       transition: transform 0.1s, width 0.3s, height 0.3s, opacity 0.3s;
-    }
-    .cursor-ring {
-      position: fixed;
-      width: 44px;
-      height: 44px;
-      border: 1px solid rgba(255,255,255,0.25);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
-      transform: translate(-50%, -50%);
-      transition: width 0.4s, height 0.4s, opacity 0.3s;
     }
 
     /* ENTER SCREEN */
@@ -1235,7 +1224,7 @@
 
       /* Cursor — ocultar en táctil */
       body { cursor: auto; }
-      .cursor, .cursor-ring { display: none; }
+      .cursor { display: none; }
 
       /* Nav */
       nav {
@@ -1407,7 +1396,6 @@
 
   <!-- CURSOR -->
   <div class="cursor" id="cursor"></div>
-  <div class="cursor-ring" id="cursorRing"></div>
 
   <!-- ENTER SCREEN -->
   <div id="enter-screen">
@@ -1906,9 +1894,7 @@
 
     // === CURSOR ===
     const cursor = document.getElementById('cursor');
-    const cursorRing = document.getElementById('cursorRing');
     let mouseX = 0, mouseY = 0;
-    let ringX = 0, ringY = 0;
 
     document.addEventListener('mousemove', e => {
       mouseX = e.clientX;
@@ -1916,22 +1902,12 @@
       gsap.to(cursor, { x: mouseX, y: mouseY, duration: 0.1 });
     });
 
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.12;
-      ringY += (mouseY - ringY) * 0.12;
-      gsap.set(cursorRing, { x: ringX, y: ringY });
-      requestAnimationFrame(animateRing);
-    }
-    animateRing();
-
     document.querySelectorAll('a, button, .product-card, .video-block, .lookbook-item').forEach(el => {
       el.addEventListener('mouseenter', () => {
-        gsap.to(cursorRing, { width: 72, height: 72, duration: 0.3 });
-        gsap.to(cursor, { width: 36, height: 36, duration: 0.3 });
+        gsap.to(cursor, { width: 48, height: 48, duration: 0.3 });
       });
       el.addEventListener('mouseleave', () => {
-        gsap.to(cursorRing, { width: 44, height: 44, duration: 0.3 });
-        gsap.to(cursor, { width: 28, height: 28, duration: 0.3 });
+        gsap.to(cursor, { width: 36, height: 36, duration: 0.3 });
       });
     });
 
